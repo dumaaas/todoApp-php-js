@@ -51,23 +51,29 @@ function prikaziZadatke(){
     document.getElementById('broj-zadataka').innerHTML = '<h6>Broj zadataka: '+zadaci.length+'</h6>';
     let tabela_body = $('#tabela_svih_body');
     let tabela = [];
-    zadaci.forEach( (zadatak, i) => {
 
+    zadaci.forEach( (zadatak, i) => {
+        var now = new Date().getTime();
+        var to = new Date(zadatak.datum);
+        let chk_box;
         let zavrseno_chk = '';
         let klasa_zavrseno = '';
         if(zadatak.zavrsen){
             zavrseno_chk = 'checked';
             klasa_zavrseno = 'zavrseno';
         }
-        let chk_box = `<input type="checkbox" onchange="zavrsiZadatak(${i})" ${zavrseno_chk} />`;
+        if(now>to) {
+            chk_box = '<input type="checkbox" disabled/>';
+        } else {
+            chk_box = `<input type="checkbox" onchange="zavrsiZadatak(${i})" ${zavrseno_chk} />`;
+        }
         let dugme_brisanje = `<button class="btn btn-sm btn-danger " onclick="ukloniZadatak(${zadatak.id})" ><i class="fa fa-times"></i></button>`;
         let dugme_izmjena = `<button class="btn btn-sm btn-primary " onclick="izmijeniZadatak(${i})" ><i class="fa fa-edit"></i></button>`;
 
         if(zadaci.length>0) {
 
             timer = setInterval(function () {
-                var now = new Date().getTime();
-                var to = new Date(zadatak.datum);
+
                 var timeleft = to - now;
 
                 var days = Math.floor(timeleft / (1000 * 60 * 60 * 24));
