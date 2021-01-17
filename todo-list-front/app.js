@@ -1,5 +1,7 @@
 var zadaci = [];
 var api_route = "http://localhost/todoApp-php-js-master/todo-list/api";
+var timer;
+var intervals = [];
 
 function citajZadatke(){
     return $.ajax({
@@ -39,6 +41,12 @@ function uspjesnost() {
 }
 
 function prikaziZadatke(){
+
+    intervals.forEach(clearInterval);
+
+    document.getElementById("tabela_svih_body").innerHTML = "";
+
+
     // let tabela_body = document.getElementById('tabela_svih_body');
     document.getElementById('broj-zadataka').innerHTML = '<h6>Broj zadataka: '+zadaci.length+'</h6>';
     let tabela_body = $('#tabela_svih_body');
@@ -54,7 +62,37 @@ function prikaziZadatke(){
         let chk_box = `<input type="checkbox" onchange="zavrsiZadatak(${i})" ${zavrseno_chk} />`;
         let dugme_brisanje = `<button class="btn btn-sm btn-danger " onclick="ukloniZadatak(${zadatak.id})" ><i class="fa fa-times"></i></button>`;
         let dugme_izmjena = `<button class="btn btn-sm btn-primary " onclick="izmijeniZadatak(${i})" ><i class="fa fa-edit"></i></button>`;
-        tabela.push(`<tr id="red_${i}" class="${klasa_zavrseno}" > <td>${zadatak.id}</td><td>${zadatak.tekst}</td><td>${zadatak.opis}</td> <td>${chk_box}</td> <td>${dugme_brisanje} ${dugme_izmjena}</td> </tr>`);
+
+        if(zadaci.length>0) {
+
+            timer = setInterval(function () {
+                var now = new Date().getTime();
+                var to = new Date(zadatak.datum);
+                var timeleft = to - now;
+
+                var days = Math.floor(timeleft / (1000 * 60 * 60 * 24));
+                var hours = Math.floor((timeleft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                var minutes = Math.floor((timeleft % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((timeleft % (1000 * 60)) / 1000);
+
+                let selector = `timer_datum${i}`;
+                let element = document.getElementById(selector).innerHTML;
+                console.log(element);
+                if(element != "") {
+                    document.getElementById(selector).innerHTML = "";
+                }
+
+                if(zadatak.zavrsen === true) {
+                    document.getElementById(selector).innerHTML = "Zavrseno na vrijeme!"
+                } else if(timeleft <= 0) {
+                    document.getElementById(selector).innerHTML = "Vrijeme isteklo!"
+                } else {
+                    document.getElementById(selector).innerHTML = days +"d "+ hours +"h " + minutes +"m " + seconds +"s";
+                }
+            }, 1000)
+            intervals.push(timer);
+        }
+        tabela.push(`<tr id="red_${i}" class="${klasa_zavrseno}" > <td>${zadatak.id}</td><td>${zadatak.tekst}</td><td>${zadatak.opis}</td> <td>${chk_box}</td> <td id="timer_datum${i}"></td> <td>${dugme_brisanje} ${dugme_izmjena}</td> </tr>`);
     });
 
     uspjesnost();
@@ -136,7 +174,8 @@ document.getElementById('dodaj_novi_forma').addEventListener('submit', function(
     e.preventDefault();
     let novi_tekst = document.getElementById('novi_zadatak_tekst').value;
     let novi_opis = document.getElementById('novi_zadatak_opis').value;
-    let novi_zadatak = { id: generisiNoviID(), tekst: novi_tekst, opis: novi_opis, zavrsen: false };
+    let novi_datum = document.getElementById('novi_zadatak_datum').value;
+    let novi_zadatak = { id: generisiNoviID(), tekst: novi_tekst, opis: novi_opis, zavrsen: false, datum: novi_datum };
 
     $.ajax({
         type: "POST",
@@ -204,7 +243,6 @@ document.getElementById('pretraga_zavrsen').addEventListener('change', function(
 
 //pokupimo potrebne vrijednosti koje saljemo na server, posaljemo ih i kao odgovor dobijemo json sa odgovarajucim podacima koje prikazemo
 function pretraga() {
-    var filterZadaci = [];
 
     tekst = document.getElementById('pretraga_tekst').value;
     opis = document.getElementById('pretraga_opis').value;
@@ -216,7 +254,6 @@ function pretraga() {
         data: { tekst: tekst, opis: opis, zavrsen: zavrsen },
         success: (result) => {
             zadaci = JSON.parse(result);
-            console.log(zadaci);
             prikaziZadatke()
         }
     });

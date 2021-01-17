@@ -22,6 +22,12 @@
         exit("Greska 2 - morate unijeti opis...");
     }
 
+    if( isset($_POST['datum']) && $_POST['datum'] != "" ){
+        $datum = $_POST['datum'];
+    }else{
+        exit("Greska 3 - morate unijeti datum...");
+    }
+
     $data = file_get_contents('../todo.db');
     $data_arr = json_decode($data, true);
     if($data == null){
@@ -29,13 +35,13 @@
     }
 
     // radimo dodavanje
-    $data_arr[] = [ 'id' => generisiNoviID() , 'tekst' => $tekst, 'opis' => $opis, 'zavrsen' => false ];
+    $data_arr[] = [ 'id' => generisiNoviID() , 'tekst' => $tekst, 'opis' => $opis, 'zavrsen' => false, 'datum' => $datum ];
 
     // cuvamo u fajl
     if( file_put_contents( '../todo.db', json_encode($data_arr) ) ){
         echo "OK";
     }else{
-        echo "Greska 3 - pogresan upis podataka...";
+        echo "Greska 4 - pogresan upis podataka...";
     }
 
 

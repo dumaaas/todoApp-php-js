@@ -49,17 +49,18 @@
         </form>
 
         <div class="row mt-5">
-            <div class="col-12 table-responsive">
+            <div class="col-12 table-responsive" id="table_wrapper">
                 <div id="broj-zadataka">
 
                 </div>
-                <table class="table table-hover table-sm">
+                <table class="table table-hover table-sm" id="tabela">
                     <thead>
                         <tr>
                             <th>ID</th>
                             <th>Tekst</th>
                             <th>Opis</th>
                             <th>Zavrseno</th>
+                            <th>Preostalo vrijeme</th>
                             <th>Akcija</th>
                         </tr>
                     </thead>
@@ -90,6 +91,8 @@
                     <input class="form-control" type="text" name="tekst" id="novi_zadatak_tekst" placeholder="Unesite tekst novog..." >
                     <br>
                     <textarea class="form-control" rows="5" name="opis" id="novi_zadatak_opis" placeholder="Unesite opis..."></textarea>
+                    <br>
+                    <input class="form-control" type="date" name="datum" id="novi_zadatak_datum">
                     <br>
                     <button class="btn btn-success btn-block">Dodaj novi</button>
                 </form>
