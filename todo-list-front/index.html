@@ -29,10 +29,10 @@
             <input type="hidden" name="pretraga" value="1">
             <div class="row">
                 <div class="col-3">
-                    <input type="text" name="tekst" id="pretraga_tekst" class="form-control" placeholder="Tekst...">
+                    <input type="text" name="tekst" id="pretraga_tekst" class="form-control" placeholder="Tekst..." autocomplete="off">
                 </div>
                 <div class="col-3">
-                    <input type="text" name="opis" id="pretraga_opis" class="form-control" placeholder="Opis...">
+                    <input type="text" name="opis" id="pretraga_opis" class="form-control" placeholder="Opis..." autocomplete="off">
                 </div>
                 <div class="col-3">
                     <select name="zavrsen" id="pretraga_zavrsen" class="form-control">
@@ -43,7 +43,7 @@
                     </select>
                 </div>
                 <div class="col-3">
-                    <button class="btn btn-primary btn-block">Pretraga</button>
+                    <button onclick="ocistiPretragu()" class="btn btn-primary btn-block">Ocisti pretragu</button>
                 </div>
             </div>
         </form>
@@ -53,7 +53,6 @@
                 <div id="broj-zadataka">
 
                 </div>
-
                 <table class="table table-hover table-sm">
                     <thead>
                         <tr>
@@ -69,6 +68,9 @@
                         <!-- popunjavamo iz JS funkcije -->
                     </tbody>
                 </table>
+                <div id="uspesnost">
+
+                </div>
             </div>
         </div>
     </div>
