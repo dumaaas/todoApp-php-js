@@ -1,5 +1,5 @@
 var zadaci = [];
-var api_route = "http://localhost/akademija/todo-list/api";
+var api_route = "http://localhost/todoApp-php-js-master/todo-list/api";
 
 function citajZadatke(){
     return $.ajax({
