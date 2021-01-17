@@ -34,7 +34,7 @@ function uspjesnost() {
     if(zadaci.length == 0) {
         document.getElementById('uspesnost').innerHTML = '';
     } else {
-        document.getElementById('uspesnost').innerHTML = '<h6>Uspesnost: '+procenat+'%</h6>';
+        document.getElementById('uspesnost').innerHTML = '<h6>Uspjesnost: '+procenat+'%</h6>';
     }
 }
 
@@ -54,7 +54,7 @@ function prikaziZadatke(){
         let chk_box = `<input type="checkbox" onchange="zavrsiZadatak(${i})" ${zavrseno_chk} />`;
         let dugme_brisanje = `<button class="btn btn-sm btn-danger " onclick="ukloniZadatak(${zadatak.id})" ><i class="fa fa-times"></i></button>`;
         let dugme_izmjena = `<button class="btn btn-sm btn-primary " onclick="izmijeniZadatak(${i})" ><i class="fa fa-edit"></i></button>`;
-        tabela.push(`<tr id="red_${i}" class="${klasa_zavrseno}" > <td>${zadatak.id}</td><td>${zadatak.tekst}</td><td>${zadatak.opis}</td> <td>${chk_box}</td> <td>${dugme_brisanje}</td><td>${dugme_izmjena}</td> </tr>`);
+        tabela.push(`<tr id="red_${i}" class="${klasa_zavrseno}" > <td>${zadatak.id}</td><td>${zadatak.tekst}</td><td>${zadatak.opis}</td> <td>${chk_box}</td> <td>${dugme_brisanje} ${dugme_izmjena}</td> </tr>`);
     });
 
     uspjesnost();
