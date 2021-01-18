@@ -96,6 +96,15 @@ body {
     border-color: #393939 !important;
 }
 
+.sad-face {
+    color: #DC143C !important;
+    font-size: 22px;
+}
+
+.happy-face {
+    color: #00AD56 !important;
+    font-size: 22px;
+}
 
 
 

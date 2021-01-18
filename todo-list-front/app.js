@@ -68,12 +68,17 @@ function prikaziZadatke() {
 
         let chk_box;
         let dugme_brisanje = `<button class="btn btn-sm dugme-brisanje " onclick="ukloniZadatak(${zadatak.id})" ><i class="fa fa-times"></i></button>`;
-        let dugme_izmjena = `<button class="btn btn-sm dugme-izmjena " onclick="izmijeniZadatak(${i})" ><i class="fa fa-edit"></i></button>`;
+        let dugme_izmjena;
 
         if (newDate > oldDate) {
-            chk_box = '<input type="checkbox" disabled/>';
+            chk_box = '<i class="far fa-frown sad-face"></i>'
+            dugme_izmjena = ``;
+        } else if(zadatak.zavrsen === true) {
+            dugme_izmjena = ``;
+            chk_box = `<i class="far fa-laugh-beam happy-face"></i>`;
         } else {
             chk_box = `<input type="checkbox" onchange="zavrsiZadatak(${i})" ${zavrseno_chk} />`;
+            dugme_izmjena = `<button class="btn btn-sm dugme-izmjena " onclick="izmijeniZadatak(${i})" ><i class="fa fa-edit"></i></button>`;
         }
 
         if (zadaci.length > 0) {
@@ -131,6 +136,7 @@ function zavrsiZadatak(index) {
         success: (response) => {
             $('#red_' + index).toggleClass('zavrseno');
             uspjesnost();
+            prikaziZadatke()
         }
     });
 
@@ -148,7 +154,7 @@ function ukloniZadatak(index) {
             success: (response) => {
                 document.getElementById("poruka-uspjesno").style.display = "block";
                 if (response == "OK") {
-                    document.getElementById('poruka-uspjesno').innerHTML = "<div class='col-12 alert alert-success text-center'> Zadatak uspjesno uklonjen! </div>"
+                    document.getElementById('poruka-uspjesno').innerHTML = "<div class='col-12 alert dugme-dodaj text-center'> Zadatak uspjesno uklonjen! </div>"
                     $('#poruka-uspjesno').delay(1000).hide(500);
                     citajZadatke().then(() => {
                         prikaziZadatke();
@@ -206,7 +212,7 @@ document.getElementById('dodaj_novi_forma').addEventListener('submit', function(
                 prikaziZadatke();
                 $("#modal_dodavanje").modal('hide');
                 isprazniPolja('dodavanje');
-                document.getElementById('poruka-uspjesno').innerHTML = "<div class='col-12 alert alert-success text-center'> Zadatak uspjesno dodat! </div>"
+                document.getElementById('poruka-uspjesno').innerHTML = "<div class='col-12 alert dugme-dodaj text-center'> Zadatak uspjesno dodat! </div>"
                 $('#poruka-uspjesno').delay(1000).hide(500);
             } else {
                 alert(result);
@@ -240,7 +246,7 @@ document.getElementById('izmjena_zadatka_forma').addEventListener('submit', func
                 citajZadatke().then(() => {
                     prikaziZadatke();
                 });
-                document.getElementById('poruka-uspjesno').innerHTML = "<div class='col-12 alert alert-success text-center'> Zadatak uspjesno izmjenjen! </div>"
+                document.getElementById('poruka-uspjesno').innerHTML = "<div class='col-12 alert dugme-dodaj text-center'> Zadatak uspjesno izmjenjen! </div>"
                 $('#poruka-uspjesno').delay(1000).hide(500);
             } else {
                 alert(result);
