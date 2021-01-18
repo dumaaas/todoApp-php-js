@@ -1,3 +1,9 @@
+tr.zavrseno{
+    background-color:#d4edda;
+}
+
+
+
 table{
     /* border: 1px solid lightgrey ; */
     color: #52057b;
@@ -5,7 +11,7 @@ table{
 
 thead {
     color: #00AD56;
-    background-color: #393939;
+    background-color: #d4edda;
 }
 
 tbody {
@@ -16,14 +22,9 @@ tr:hover {
     color:#00AD56 !important;
 }
 
-
-body {
-    background-color: #222222 !important;
-}
-
 .pretraga-form input, select{
     box-sizing: border-box;
-    background-color: #393939 !important;
+    background-color: #d4edda !important;
     border: 0px !important;
     display: block;
     text-indent: 10px;
@@ -33,7 +34,7 @@ body {
 
 .pretraga-form input:focus{
     box-sizing: border-box;
-    background-color: #393939;
+    background-color: #d4edda;
     border: 0px;
     display: block;
     text-indent: 10px;
@@ -59,15 +60,15 @@ body {
 }
 
 .dugme-izmjena {
-    color: #306844 !important;
+    color: #007BFF !important;
 }
 
 .dugme-dodaj {
-    background-color: #00AD56 !important;
+    background-color: #28A745 !important;
 }
 
 .dugme-ocisti {
-    background-color: #DC143C !important;
+    background-color: #007BFF !important;
 }
 
 .modal-content {
@@ -123,6 +124,7 @@ body {
     height: 26px;
     width: 50px;
     transform: scale(1.5);
+
 }
 
 .label .ball {
@@ -149,8 +151,6 @@ body {
 .fa-sun {
     color: #f39c12;
 }
-
-
 
 
 
