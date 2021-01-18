@@ -17,7 +17,7 @@ const btn = document.querySelector("#chk");
 const theme = document.querySelector("#theme-link");
 
 
-btn.addEventListener("change", function() {
+btn.addEventListener("click", function() {
     if (theme.getAttribute("href") == "./light-style.css") {
         theme.href = "./style.css";
     } else {
@@ -297,8 +297,12 @@ function pretraga() {
 }
 
 //funckija koja se koristi da se isprazne vrijednosti pretrage
-function ocistiPretragu() {
+document.getElementById('ocisti_pretragu').addEventListener('click', function(e) {
+    e.preventDefault();
     document.getElementById('pretraga_tekst').value = "";
     document.getElementById('pretraga_opis').value = "";
     document.getElementById('pretraga_zavrsen').value = "";
-}
+    citajZadatke().then(() => {
+        prikaziZadatke();
+    });
+});
