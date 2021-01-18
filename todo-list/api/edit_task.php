@@ -33,13 +33,20 @@
         exit("Greska 2 - morate unijeti opis...");
     }
 
+    if( isset($_POST['datum']) && $_POST['datum'] != "" ){
+        $datum = $_POST['datum'];
+    }else{
+        exit("Greska 3 - morate unijeti datum...");
+    }
+
     $todos[$index]['tekst'] = $tekst;
     $todos[$index]['opis'] = $opis;
+    $todos[$index]['datum'] = $datum;
 
     // cuvamo u fajl
     if( file_put_contents( '../todo.db', json_encode($todos) ) ){
         echo "OK";
     }else{
-        echo "Greska 3 - pogresan upis podataka...";
+        echo "Greska 4 - pogresan upis podataka...";
     }
 

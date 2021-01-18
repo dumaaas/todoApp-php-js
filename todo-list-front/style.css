@@ -1,7 +1,6 @@
 table{
     /* border: 1px solid lightgrey ; */
     color: #52057b;
-
 }
 
 thead {
@@ -9,21 +8,46 @@ thead {
     background-color: #393939;
 }
 
-tbody {    color: #748080;
-
-
+tbody {
+    color: #748080;
 }
 
-tr:hover {color:#00AD56 !important;}
+tr:hover {
+    color:#00AD56 !important;
+}
 
 
 body {
     background-color: #222222 !important;
-    color: #52057b;
+}
+
+.pretraga-form input, select{
+    box-sizing: border-box;
+    background-color: #393939 !important;
+    border: 0px !important;
+    display: block;
+    text-indent: 10px;
+    color: #00AD56 !important;
+    margin-bottom: 3px;
+}
+
+.pretraga-form input:focus{
+    box-sizing: border-box;
+    background-color: #393939;
+    border: 0px;
+    display: block;
+    text-indent: 10px;
+    color: #00AD56;
+    margin-bottom: 3px;
+}
+
+::placeholder {
+    background-color: #393939 !important;
+    color: #00AD56 !important;
 }
 
 .naslov {
-    color: #1DA1F2;
+    color: #00AD56;
     font-size: 30px;
 }
 
@@ -31,7 +55,23 @@ body {
     margin-top: 30px;
 }
 
-tr.zavrseno{
-    background-color:#00AD56;
-    color: #393939;
+.dugme-brisanje {
+    color: #DC143C !important;
 }
+
+.dugme-izmjena {
+    color: #306844 !important;
+}
+
+.dugme-dodaj {
+    background-color: #00AD56 !important;
+}
+
+.dugme-ocisti {
+    background-color: #DC143C !important;
+}
+
+
+
+
+

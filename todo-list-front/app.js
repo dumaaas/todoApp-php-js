@@ -29,7 +29,7 @@ function uspjesnost() {
     procenat = ((brojRijesenih / zadaci.length) * 100).toFixed(2);
 
     if (procenat < 50) {
-        document.getElementById("uspesnost").style.color = "#FFCCCB";
+        document.getElementById("uspesnost").style.color = "#DC143C";
     } else {
         document.getElementById("uspesnost").style.color = "#00AD56";
     }
@@ -67,8 +67,8 @@ function prikaziZadatke() {
         }
 
         let chk_box;
-        let dugme_brisanje = `<button class="btn btn-sm btn-danger " onclick="ukloniZadatak(${zadatak.id})" ><i class="fa fa-times"></i></button>`;
-        let dugme_izmjena = `<button class="btn btn-sm btn-primary " onclick="izmijeniZadatak(${i})" ><i class="fa fa-edit"></i></button>`;
+        let dugme_brisanje = `<button class="btn btn-sm dugme-brisanje " onclick="ukloniZadatak(${zadatak.id})" ><i class="fa fa-times"></i></button>`;
+        let dugme_izmjena = `<button class="btn btn-sm dugme-izmjena " onclick="izmijeniZadatak(${i})" ><i class="fa fa-edit"></i></button>`;
 
         if (newDate > oldDate) {
             chk_box = '<input type="checkbox" disabled/>';
@@ -97,8 +97,10 @@ function prikaziZadatke() {
 
                 if (zadatak.zavrsen === true) {
                     document.getElementById(selector).innerHTML = "Zavrseno na vrijeme!"
+                    document.getElementById(selector).style.color = "#00AD56";
                 } else if (timeleft <= 0) {
                     document.getElementById(selector).innerHTML = "Vrijeme isteklo!"
+                    document.getElementById(selector).style.color = "#DC143C";
                 } else {
                     document.getElementById(selector).innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s";
                 }
@@ -163,6 +165,7 @@ function izmijeniZadatak(index) {
     let zadatak = zadaci[index];
     document.getElementById('izmjena_tekst').value = zadatak.tekst;
     document.getElementById('izmjena_opis').value = zadatak.opis;
+    document.getElementById('izmjena_datum').value = zadatak.datum;
     document.getElementById('id_izmjena').value = zadatak.id;
     $("#modal_izmjena").modal('show');
 }
@@ -171,9 +174,11 @@ function isprazniPolja(tip) {
     if (tip == 'izmjena') {
         document.getElementById('izmjena_tekst').value = "";
         document.getElementById('izmjena_opis').value = "";
+        document.getElementById('izmjena_datum').value = "";
         document.getElementById('index_izmjena').value = -1;
     } else if (tip == 'dodavanje') {
         document.getElementById('novi_zadatak_tekst').value = "";
+        document.getElementById('novi_zadatak_datum').value = "";
         document.getElementById('novi_zadatak_opis').value = "";
     }
 }
@@ -220,12 +225,13 @@ document.getElementById('izmjena_zadatka_forma').addEventListener('submit', func
 
     tekst = document.getElementById('izmjena_tekst').value;
     opis = document.getElementById('izmjena_opis').value;
+    datum = document.getElementById('izmjena_datum').value;
     id = document.getElementById('id_izmjena').value;
 
     $.ajax({
         type: "POST",
         url: api_route + '/edit_task.php',
-        data: { id: id, tekst: tekst, opis: opis },
+        data: { id: id, tekst: tekst, opis: opis, datum: datum },
         success: (result) => {
             document.getElementById("poruka-uspjesno").style.display = "block";
             if (result == "OK") {

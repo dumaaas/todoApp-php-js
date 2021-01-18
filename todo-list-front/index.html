@@ -13,7 +13,7 @@
         <p class="text-center mt-3 naslov" >TO-DO lista</p>
         <div class="row">
             <div class="col-4 offset-4">
-                <button class="btn btn-success btn-block mt-3 btn-sm" data-toggle="modal" data-target="#modal_dodavanje"> 
+                <button class="btn btn-block mt-3 btn-sm dugme-dodaj" data-toggle="modal" data-target="#modal_dodavanje">
                     <i class="fa fa-plus"></i> 
                     Dodaj novi zadatak 
                 </button>
@@ -25,7 +25,7 @@
         <div id="poruka-uspjesno">
         </div>
 
-        <form method="GET" id="pretraga_form">
+        <form method="GET" id="pretraga_form" class="pretraga-form">
             <input type="hidden" name="pretraga" value="1">
             <div class="row">
                 <div class="col-3">
@@ -43,7 +43,7 @@
                     </select>
                 </div>
                 <div class="col-3">
-                    <button onclick="ocistiPretragu()" class="btn btn-primary btn-block">Ocisti pretragu</button>
+                    <button onclick="ocistiPretragu()" class="btn dugme-ocisti btn-block">Ocisti pretragu</button>
                 </div>
             </div>
         </form>
@@ -64,7 +64,7 @@
                             <th>Akcija</th>
                         </tr>
                     </thead>
-                    <tbody id="tabela_svih_body" >
+                    <tbody id="tabela_svih_body" class="tabela-body" >
                         <!-- popunjavamo iz JS funkcije -->
                     </tbody>
                 </table>
@@ -122,6 +122,8 @@
                     <input type="text" class="form-control" name="tekst" id="izmjena_tekst" placeholder="Unesite tekst novog..." >
                     <br>
                     <textarea rows="5" class="form-control" name="opis" id="izmjena_opis" placeholder="Unesite opis..."></textarea>
+                    <br>
+                    <input class="form-control" type="date" name="datum" id="izmjena_datum">
                     <br>
                     <button class="btn btn-success btn-block">Potvrdi</button>
                 </form>
