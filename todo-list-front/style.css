@@ -42,7 +42,6 @@ body {
 }
 
 ::placeholder {
-    background-color: #393939 !important;
     color: #00AD56 !important;
 }
 
@@ -70,6 +69,33 @@ body {
 .dugme-ocisti {
     background-color: #DC143C !important;
 }
+
+.modal-content {
+    background-color: #222222 !important;
+}
+
+.modal-title {
+    color: #00AD56 !important;
+}
+
+.close {
+    color: #DC143C !important;
+}
+
+.modal-body input, textarea {
+    box-sizing: border-box;
+    background-color: #393939 !important;
+    border: 0px !important;
+    display: block;
+    text-indent: 10px;
+    color: #00AD56 !important;
+    margin-bottom: 3px;
+}
+
+.modal-footer, .modal-header {
+    border-color: #393939 !important;
+}
+
 
 
 
