@@ -1,5 +1,30 @@
 table{
     /* border: 1px solid lightgrey ; */
+    color: #52057b;
+
+}
+
+thead {
+    color: #00AD56;
+    background-color: #393939;
+}
+
+tbody {    color: #748080;
+
+
+}
+
+tr:hover {color:#00AD56 !important;}
+
+
+body {
+    background-color: #222222 !important;
+    color: #52057b;
+}
+
+.naslov {
+    color: #1DA1F2;
+    font-size: 30px;
 }
 
 #dodaj_novi{
@@ -7,5 +32,6 @@ table{
 }
 
 tr.zavrseno{
-    background-color:#d4edda;
+    background-color:#00AD56;
+    color: #393939;
 }

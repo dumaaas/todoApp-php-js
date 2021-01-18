@@ -3,7 +3,7 @@ var api_route = "http://localhost/todoApp-php-js-master/todo-list/api";
 var timer;
 var intervals = [];
 
-function citajZadatke(){
+function citajZadatke() {
     return $.ajax({
         type: "GET",
         url: api_route + "/get_tasks.php",
@@ -22,58 +22,65 @@ function uspjesnost() {
     let procenat = 0;
 
     zadaci.forEach(zadatak => {
-        if(zadatak.zavrsen === true) {
+        if (zadatak.zavrsen === true) {
             brojRijesenih++;
         }
     })
-    procenat = ((brojRijesenih/zadaci.length) * 100).toFixed(2);
+    procenat = ((brojRijesenih / zadaci.length) * 100).toFixed(2);
 
-    if(procenat<50) {
-        document.getElementById("uspesnost").style.color = "red";
+    if (procenat < 50) {
+        document.getElementById("uspesnost").style.color = "#FFCCCB";
     } else {
-        document.getElementById("uspesnost").style.color = "green";
+        document.getElementById("uspesnost").style.color = "#00AD56";
     }
-    if(zadaci.length == 0) {
+    if (zadaci.length == 0) {
         document.getElementById('uspesnost').innerHTML = '';
     } else {
-        document.getElementById('uspesnost').innerHTML = '<h6>Uspjesnost: '+procenat+'%</h6>';
+        document.getElementById('uspesnost').innerHTML = '<h6>Uspjesnost: ' + procenat + '%</h6>';
     }
 }
 
-function prikaziZadatke(){
+function prikaziZadatke() {
 
+    let brojZadataka = document.getElementById('broj-zadataka');
     intervals.forEach(clearInterval);
 
     document.getElementById("tabela_svih_body").innerHTML = "";
 
 
     // let tabela_body = document.getElementById('tabela_svih_body');
-    document.getElementById('broj-zadataka').innerHTML = '<h6>Broj zadataka: '+zadaci.length+'</h6>';
+    brojZadataka.innerHTML = '<h6>Broj zadataka: ' + zadaci.length + '</h6>';
+    brojZadataka.style.color = "#00AD56";
     let tabela_body = $('#tabela_svih_body');
     let tabela = [];
 
-    zadaci.forEach( (zadatak, i) => {
-        var now = new Date().getTime();
-        var to = new Date(zadatak.datum);
-        let chk_box;
+    zadaci.forEach((zadatak, i) => {
+
         let zavrseno_chk = '';
         let klasa_zavrseno = '';
-        if(zadatak.zavrsen){
+        let newDate = new Date().getTime();
+        let oldDate = new Date(zadatak.datum);
+
+        if (zadatak.zavrsen) {
             zavrseno_chk = 'checked';
             klasa_zavrseno = 'zavrseno';
         }
-        if(now>to) {
+
+        let chk_box;
+        let dugme_brisanje = `<button class="btn btn-sm btn-danger " onclick="ukloniZadatak(${zadatak.id})" ><i class="fa fa-times"></i></button>`;
+        let dugme_izmjena = `<button class="btn btn-sm btn-primary " onclick="izmijeniZadatak(${i})" ><i class="fa fa-edit"></i></button>`;
+
+        if (newDate > oldDate) {
             chk_box = '<input type="checkbox" disabled/>';
         } else {
             chk_box = `<input type="checkbox" onchange="zavrsiZadatak(${i})" ${zavrseno_chk} />`;
         }
-        let dugme_brisanje = `<button class="btn btn-sm btn-danger " onclick="ukloniZadatak(${zadatak.id})" ><i class="fa fa-times"></i></button>`;
-        let dugme_izmjena = `<button class="btn btn-sm btn-primary " onclick="izmijeniZadatak(${i})" ><i class="fa fa-edit"></i></button>`;
 
-        if(zadaci.length>0) {
+        if (zadaci.length > 0) {
 
-            timer = setInterval(function () {
-
+            timer = setInterval(function() {
+                var now = new Date().getTime();
+                var to = new Date(zadatak.datum);
                 var timeleft = to - now;
 
                 var days = Math.floor(timeleft / (1000 * 60 * 60 * 24));
@@ -84,16 +91,16 @@ function prikaziZadatke(){
                 let selector = `timer_datum${i}`;
                 let element = document.getElementById(selector).innerHTML;
                 console.log(element);
-                if(element != "") {
+                if (element != "") {
                     document.getElementById(selector).innerHTML = "";
                 }
 
-                if(zadatak.zavrsen === true) {
+                if (zadatak.zavrsen === true) {
                     document.getElementById(selector).innerHTML = "Zavrseno na vrijeme!"
-                } else if(timeleft <= 0) {
+                } else if (timeleft <= 0) {
                     document.getElementById(selector).innerHTML = "Vrijeme isteklo!"
                 } else {
-                    document.getElementById(selector).innerHTML = days +"d "+ hours +"h " + minutes +"m " + seconds +"s";
+                    document.getElementById(selector).innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s";
                 }
             }, 1000)
             intervals.push(timer);
@@ -105,22 +112,22 @@ function prikaziZadatke(){
     tabela_body.html(tabela.join(''));
 }
 
-function generisiNoviID(){
+function generisiNoviID() {
     let max = 0;
-    for(let i = 0; i < zadaci.length; i++){
-        if(zadaci[i].id > max) max = zadaci[i].id;
+    for (let i = 0; i < zadaci.length; i++) {
+        if (zadaci[i].id > max) max = zadaci[i].id;
     }
-    return max+1;
+    return max + 1;
 }
 
-function zavrsiZadatak(index){
+function zavrsiZadatak(index) {
     zadaci[index].zavrsen = !(zadaci[index].zavrsen);
-    $.ajax({ 
+    $.ajax({
         type: "POST",
         url: api_route + '/complete_task.php',
         data: { index: index, status: (zadaci[index].zavrsen) },
         success: (response) => {
-            $('#red_'+index).toggleClass('zavrseno');
+            $('#red_' + index).toggleClass('zavrseno');
             uspjesnost();
         }
     });
@@ -130,18 +137,18 @@ function zavrsiZadatak(index){
 //funckija za brisanje zadatka
 //ukoliko smo uspjesno izbrisali zadatak, prikaze se poruka da je zadatak uspjesno uklonjen i ukloni se nakon par sekundi
 //ukoliko nismo, prikazujemo u alertu odgovarajucu poruku sa back-a
-function ukloniZadatak(index){
-    if(confirm("Da li ste sigurni?")){
+function ukloniZadatak(index) {
+    if (confirm("Da li ste sigurni?")) {
         $.ajax({
             type: "POST",
             url: api_route + '/delete_task.php',
             data: { id: index },
             success: (response) => {
                 document.getElementById("poruka-uspjesno").style.display = "block";
-                if(response == "OK") {
+                if (response == "OK") {
                     document.getElementById('poruka-uspjesno').innerHTML = "<div class='col-12 alert alert-success text-center'> Zadatak uspjesno uklonjen! </div>"
                     $('#poruka-uspjesno').delay(1000).hide(500);
-                    citajZadatke().then( () => {
+                    citajZadatke().then(() => {
                         prikaziZadatke();
                     });
                 } else {
@@ -152,7 +159,7 @@ function ukloniZadatak(index){
     }
 }
 
-function izmijeniZadatak(index){
+function izmijeniZadatak(index) {
     let zadatak = zadaci[index];
     document.getElementById('izmjena_tekst').value = zadatak.tekst;
     document.getElementById('izmjena_opis').value = zadatak.opis;
@@ -160,23 +167,23 @@ function izmijeniZadatak(index){
     $("#modal_izmjena").modal('show');
 }
 
-function isprazniPolja(tip){
-    if(tip == 'izmjena'){
+function isprazniPolja(tip) {
+    if (tip == 'izmjena') {
         document.getElementById('izmjena_tekst').value = "";
         document.getElementById('izmjena_opis').value = "";
         document.getElementById('index_izmjena').value = -1;
-    }else if(tip == 'dodavanje'){
+    } else if (tip == 'dodavanje') {
         document.getElementById('novi_zadatak_tekst').value = "";
-        document.getElementById('novi_zadatak_opis').value = ""; 
+        document.getElementById('novi_zadatak_opis').value = "";
     }
 }
 
-citajZadatke().then( () => {
+citajZadatke().then(() => {
     prikaziZadatke();
 });
 
 // dodavanje event listener-a
-document.getElementById('dodaj_novi_forma').addEventListener('submit', function(e){
+document.getElementById('dodaj_novi_forma').addEventListener('submit', function(e) {
     e.preventDefault();
     let novi_tekst = document.getElementById('novi_zadatak_tekst').value;
     let novi_opis = document.getElementById('novi_zadatak_opis').value;
@@ -189,17 +196,17 @@ document.getElementById('dodaj_novi_forma').addEventListener('submit', function(
         data: novi_zadatak,
         success: (result) => {
             document.getElementById("poruka-uspjesno").style.display = "block";
-            if(result == "OK"){
+            if (result == "OK") {
                 zadaci.push(novi_zadatak);
                 prikaziZadatke();
                 $("#modal_dodavanje").modal('hide');
                 isprazniPolja('dodavanje');
                 document.getElementById('poruka-uspjesno').innerHTML = "<div class='col-12 alert alert-success text-center'> Zadatak uspjesno dodat! </div>"
                 $('#poruka-uspjesno').delay(1000).hide(500);
-            }else{
+            } else {
                 alert(result);
             }
-        }    
+        }
     });
 
 });
@@ -208,7 +215,7 @@ document.getElementById('dodaj_novi_forma').addEventListener('submit', function(
 //event listener za izmjenu zadatka
 //pokupimo vrijednosti koje saljemo na server za izmjenu i ako je sve proslo  uspjesno prikaze se odgovarajuca poruka
 //ukoliko je doslo do greske, prikazuje se alert sa odgovarajucom porukom sa back-a
-document.getElementById('izmjena_zadatka_forma').addEventListener('submit', function(e){
+document.getElementById('izmjena_zadatka_forma').addEventListener('submit', function(e) {
     e.preventDefault();
 
     tekst = document.getElementById('izmjena_tekst').value;
@@ -221,15 +228,15 @@ document.getElementById('izmjena_zadatka_forma').addEventListener('submit', func
         data: { id: id, tekst: tekst, opis: opis },
         success: (result) => {
             document.getElementById("poruka-uspjesno").style.display = "block";
-            if(result == "OK"){
+            if (result == "OK") {
                 $("#modal_izmjena").modal('hide');
                 isprazniPolja('izmjena');
-                citajZadatke().then( () => {
+                citajZadatke().then(() => {
                     prikaziZadatke();
                 });
                 document.getElementById('poruka-uspjesno').innerHTML = "<div class='col-12 alert alert-success text-center'> Zadatak uspjesno izmjenjen! </div>"
                 $('#poruka-uspjesno').delay(1000).hide(500);
-            }else{
+            } else {
                 alert(result);
             }
         }
@@ -239,11 +246,11 @@ document.getElementById('izmjena_zadatka_forma').addEventListener('submit', func
 
 //postavljena live pretraga (radi lakseg testiranja)
 //nije efikasno jer u slucaju ogromnog broja zadataka, dolazilo bi do stalnih zahtjeva prema serveru i bilo bi dosta sporo
-document.getElementById('pretraga_form').addEventListener('keyup', function(e){
-   pretraga();
+document.getElementById('pretraga_form').addEventListener('keyup', function(e) {
+    pretraga();
 });
 
-document.getElementById('pretraga_zavrsen').addEventListener('change', function(e){
+document.getElementById('pretraga_zavrsen').addEventListener('change', function(e) {
     pretraga();
 });
 
